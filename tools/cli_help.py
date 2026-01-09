@@ -1,16 +1,21 @@
 import os
 import subprocess
+import logging
 
-def test_function():
-    print("This is a test function.")
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+
+def dummy_function():
+    logger.info("This is a dummy function.")
     # Example usage of environment variable to get Bazel output base directory
     subprocess.run(["echo", "Retrieving Bazel output base directory..."])
     subprocess.run(["bazel", "info"])
+    return 0
     
 def main():
     
     ws = os.environ.get("BUILD_WORKSPACE_DIRECTORY")
-    print(f"Workspace directory: {ws}")
+    logger.info(f"Workspace directory: {ws}")
     if ws:
         os.chdir(ws)
         try:
@@ -22,11 +27,11 @@ def main():
                 check=True,
             )
             output_base = result.stdout.strip()
-            print(f"Output base directory: {output_base}")
+            logger.info(f"Output base directory: {output_base}")
         except subprocess.CalledProcessError as e:
-            print(f"Error retrieving output base: {e}")
+            logger.error(f"Error retrieving output base: {e}")
     else:
-        print("BUILD_WORKSPACE_DIRECTORY environment variable is not set.")
+        logger.error("BUILD_WORKSPACE_DIRECTORY environment variable is not set.")
         
 if __name__ == "__main__":
     main()
