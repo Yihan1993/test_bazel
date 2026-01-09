@@ -10,24 +10,18 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@my_bazel_module//cli_helper:cli_helper.bzl", "cli_helper")
-load("@my_bazel_module//cr_checker:cr_checker.bzl", "copyright_checker")
-cli_helper(
-    name = "my_help",
+filegroup(
+    name = "templates",
+    srcs = [
+        "templates.ini",
+    ],
     visibility = ["//visibility:public"],
 )
 
-copyright_checker(
-    name = "copyright",
+filegroup(
+    name = "config",
     srcs = [
-        #"//tools",  # Use full label if src is a package
-        "//:BUILD",
-        "//:MODULE.bazel",
-        "cli_helper",
-        "cr_checker",
-        # Add other directories/files you want to check
+        "config.json",
     ],
-    config = "//cr_checker/resources:config",
-    template = "//cr_checker/resources:templates",
     visibility = ["//visibility:public"],
 )

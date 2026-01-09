@@ -10,21 +10,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@aspect_rules_py//py:defs.bzl", "py_binary")
+load("@aspect_rules_py//py:defs.bzl", "py_library")
 
-def cli_helper(name, visibility):
-    py_binary(
-        name = name,
-        srcs = ["@my_bazel_module//tools:cli_help_lib"],
-        visibility = visibility,
-    )
-
-    native.alias(
-        name = "help",
-        actual = ":" + name,
-        visibility = visibility,
-        tags = [
-            "cli_help=Output all bazel targets with cli_help tag:\n" +
-            "bazel run //:help",
-        ],
-    )
+py_library(
+    name = "cli_help_lib",
+    srcs = ["cli_help.py"],
+    visibility = ["//visibility:public"],
+)
